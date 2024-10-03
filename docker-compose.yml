@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  app:
+    build:
+      context: .
+    container_name: app
+    env_file:
+      - .env
+    command: ['/app/entrypoint.sh']
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

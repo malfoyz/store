@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "store"
+version = "0.1.0"
+description = "Онлайн-магазин на Django в качестве домашнего задания ITM."
+authors = ["malfoyz <the13mufasa@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.1"
+python-dotenv = "^1.0.1"
+psycopg2 = "^2.9.9"
+pillow = "^10.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
