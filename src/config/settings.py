@@ -37,6 +37,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Custom middleware
+    'core.middleware.LoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -116,3 +119,49 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s] %(levelname)s: %(message)s',
+            'datefmt': '%Y.%m.%d %H:%M:%S',
+        }
+    },
+    'handlers': {
+        'console_dev': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'filters': ['require_debug_true']
+        },
+        'console_prod': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logging.log',
+            'formatter': 'simple',
+            'level': 'ERROR',
+        },
+    },
+    'loggers': {
+        'my_middleware_logging': {
+            'handlers': ['console_dev', 'console_prod', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
